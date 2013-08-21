@@ -1,7 +1,18 @@
 ACLOCAL_AMFLAGS = -I m4
 AUTOMAKE_OPTIONS = foreign
 
-SUBDIRS = src/tools data src test doc
+noinst_HEADERS = $(NULL)
+lib_LTLIBRARIES = $(NULL)
+CLEANFILES = $(NULL)
+
+include $(top_srcdir)/doc/Makefile.am
+include $(top_srcdir)/data/Makefile.am
+include $(top_srcdir)/src/Makefile.am
+include $(top_srcdir)/test/Makefile.am
+
+info_TEXINFOS = \
+	doc/libchewing.texi \
+	$(NULL)
 
 CMAKE_FILES = \
 	cmake/chewing.pc.in \
@@ -35,7 +46,7 @@ chewing_include_HEADERS = \
 	include/global.h \
 	$(NULL)
 
-noinst_HEADERS =\
+noinst_HEADERS += \
 	include/internal/char-private.h \
 	include/internal/chewing-private.h \
 	include/internal/chewing-utf8-util.h \

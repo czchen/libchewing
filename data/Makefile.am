@@ -1,28 +1,38 @@
-tooldir = $(top_builddir)/src/tools
 if ENABLE_BINARY_DATA
 chindexs = \
-	ch_index_begin.dat \
-	ch_index_phone.dat \
+	$(top_srcdir)/ch_index_begin.dat \
+	$(top_srcdir)/ch_index_phone.dat \
 	$(NULL)
 else
-chindexs = ch_index.dat
+chindexs = \
+	$(top_srcdir)/ch_index.dat \
+	$(NULL)
 endif
+
 datas = \
-	us_freq.dat \
-	dict.dat \
-	ph_index.dat \
-	fonetree.dat \
+	$(top_srcdir)/us_freq.dat \
+	$(top_srcdir)/dict.dat \
+	$(top_srcdir)/ph_index.dat \
+	$(top_srcdir)/fonetree.dat \
 	$(chindexs) \
 	$(NULL)
-static_tables = pinyin.tab swkb.dat symbols.dat
-generated_header = $(top_builddir)/src/chewing-definition.h
+
+static_tables = \
+	$(top_srcdir)\pinyin.tab \
+	$(top_srcdir)\swkb.dat \
+	$(top_srcdir)\symbols.dat \
+	$(NULL)
+
+generated_header = \
+	$(top_builddir)/src/chewing-definition.h \
+	$(NULL)
 
 dist_noinst_DATA = \
-	NOTE \
-	phone.cin \
-	phone.cin-CNS11643-complete.patch \
-	svnrev \
-	tsi.src \
+	$(top_srcdir)\NOTE \
+	$(top_srcdir)\phone.cin \
+	$(top_srcdir)\phone.cin-CNS11643-complete.patch \
+	$(top_srcdir)\svnrev \
+	$(top_srcdir)\tsi.src \
 	$(NULL)
 
 chewing_datadir = $(pkglibdir)
@@ -35,17 +45,13 @@ all: $(datas)
 
 $(datas): gendata_stamp
 
-gendata_stamp: phone.cin tsi.src
-	-if test -f $(generated_header); then \
-		echo "chewing-definition.h exists."; \
-	fi
-	$(MAKE) gendata && \
+gendata_stamp $(generated_header): phone.cin tsi.src $(tooldir)/sort$(EXEEXT) $(tooldir)/maketree$(EXEEXT)
+	env LC_ALL=C $(top_builddir)/sort$(EXEEXT) $(top_srcdir)/data/phone.cin $(top_srcdir)/data/tsi.src
+	$(top_builddir)/maketree$(EXEEXT)
+	-rm -f phoneid.dic
+	-mkdir -p $(top_builddir)/data
+	-mv $(datas) $(top_builddir)/data
+	-mv -f chewing-definition.h $(generated_header)
 	touch $@
 
-gendata:
-	env LC_ALL=C $(tooldir)/sort$(EXEEXT) $(top_srcdir)/data/phone.cin $(top_srcdir)/data/tsi.src
-	$(tooldir)/maketree$(EXEEXT)
-	-rm -f phoneid.dic
-	-mv -f chewing-definition.h $(generated_header)
-
-CLEANFILES = $(datas) gendata_stamp $(generated_header)
+CLEANFILES += $(datas) gendata_stamp $(generated_header)

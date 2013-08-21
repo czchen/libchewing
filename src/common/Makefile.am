@@ -1,4 +1,4 @@
-INCLUDES = \
+common_INCLUDES = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/include/internal \
 	-I$(top_srcdir)/src/porting_layer/include \
@@ -7,6 +7,6 @@ INCLUDES = \
 noinst_LTLIBRARIES = libcommon.la
 
 libcommon_la_SOURCES = \
-	key2pho.c \
-	chewing-utf8-util.c \
+	$(top_srcdir)/src/common/key2pho.c \
+	$(top_srcdir)/src/common/chewing-utf8-util.c \
 	$(NULL)

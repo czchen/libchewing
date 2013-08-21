@@ -174,15 +174,8 @@ AC_CONFIG_LINKS([
 AC_CONFIG_FILES([
         Makefile
         chewing.pc
-        data/Makefile
         doc/Makefile
         libchewing.spec
-        src/Makefile
-        src/common/Makefile
-        src/porting_layer/Makefile
-        src/porting_layer/src/Makefile
-        src/tools/Makefile
-        test/Makefile
 ])
 AC_OUTPUT
 
