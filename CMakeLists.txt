@@ -239,7 +239,7 @@ endforeach()
 
 add_library(testhelper STATIC
 	${TEST_SRC_DIR}/testhelper.c
-	$<TARGET_OBJECTS:chewing>
+	$<TARGET_OBJECTS:chewing_lib>
 	$<TARGET_OBJECTS:common>
 )
 set_target_properties(testhelper PROPERTIES
@@ -266,7 +266,7 @@ endif()
 add_custom_target(data ALL DEPENDS ${ALL_DATA})
 
 # library
-add_library(chewing OBJECT
+add_library(chewing_lib OBJECT
 	${ALL_INC}
 	${INC_DIR}/internal/chewing-private.h
 	${INC_DIR}/internal/chewingutil.h
@@ -299,20 +299,20 @@ add_library(chewing OBJECT
 	${SRC_DIR}/userphrase.c
 	${SRC_DIR}/zuin.c
 )
-set_target_properties(chewing PROPERTIES
+set_target_properties(chewing_lib PROPERTIES
 	COMPILE_DEFINITIONS "LIBDIR=\"${INSTALL_DATA}\""
 )
 
 if (NOT MSVC)
 	add_library(chewing_shared SHARED
-		$<TARGET_OBJECTS:chewing>
+		$<TARGET_OBJECTS:chewing_lib>
 		$<TARGET_OBJECTS:common>
 	)
 	list(APPEND LIBS chewing_shared)
 endif()
 
 add_library(chewing_static STATIC
-	$<TARGET_OBJECTS:chewing>
+	$<TARGET_OBJECTS:chewing_lib>
 	$<TARGET_OBJECTS:common>
 )
 list(APPEND LIBS chewing_static)
