@@ -247,6 +247,20 @@ platform:
 	- cmake . -G "Visual Studio 11 Win64" (64-bits Windows)
 
 
+## Build with emscripten
+[Emscripten](http://emscripten.org/) is an LLVM to JavaScript compiler. With
+it, libchewing can be converted as JavaScript library.
+
+### Requirement
+*   [emscripten](http://emscripten.org/)
+*   clang-3.2
+*   llvm-3.2
+
+### Procedure
+    emconfigure configure
+    emmake make CC_FOR_BUILD=gcc
+
+
 ## Usage
 
 ( modified from http://code.google.com/p/ibus/wiki/ChewingUserGuide )
