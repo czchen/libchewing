@@ -94,6 +94,9 @@ void IncreaseLifeTime(struct ChewingData *pgdata);
 
 char *GetDefaultUserPhrasePath(struct ChewingData *pgdata);
 
+int InitUserphrase(struct ChewingData *pgdata, const char *path);
+void TerminateUserphrase(struct ChewingData *pgdata);
+
 /* *INDENT-OFF* */
 #endif
 /* *INDENT-ON* */
