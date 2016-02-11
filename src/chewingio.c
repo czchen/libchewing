@@ -2351,3 +2351,42 @@ CHEWING_API int chewing_clean_bopomofo_buf(ChewingContext *ctx)
     MakeOutput(pgo, pgdata);
     return 0;
 }
+
+static void swap(ChewingContext *ctx1, ChewingContext *ctx2)
+{
+    ChewingData *pgdata;
+    ChewingOutput *pgo;
+
+    pgdata = ctx1->data;
+    ctx1->data = ctx2->data;
+    ctx2->data = pgdata;
+
+    pgo = ctx1->output;
+    ctx1->output = ctx2->output;
+    ctx2->output = pgo;
+
+    return;
+}
+
+CHEWING_API int chewing_reload(ChewingContext *ctx,
+                               const char *syspath,
+                               const char *userpath)
+{
+    ChewingContext *new_ctx;
+    ChewingData *pgdata;
+
+    pgdata = ctx->data;
+
+    LOG_API("");
+
+    new_ctx = chewing_new2(syspath, userpath, pgdata->logger, pgdata->loggerData);
+    if (!new_ctx) {
+        return -1;
+    }
+
+    swap(ctx, new_ctx);
+
+    chewing_delete(new_ctx);
+
+    return 0;
+}
